@@ -14,8 +14,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        OnBet();
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            OnBet();
+        }
+        
     }
+
+
 
     public void OnStartGame(Player player1, Player player2)
     {
@@ -23,20 +29,43 @@ public class GameManager : MonoBehaviour
         this.player2 = player2;
     }
 
+    public bool IsWinner(Bet playerBet, Bet opponentBet)
+    {
+        if (opponentBet == Bet.ROCK && playerBet == Bet.PAPER)
+        {
+            return true;
+        }
+        else if (opponentBet == Bet.PAPER && playerBet == Bet.SCISSORS)
+        {
+            return true;
+        }
+        else if (opponentBet == Bet.SCISSORS && playerBet == Bet.ROCK)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
     public void OnBet()
     {
         player1.PerformBet(UnityEngine.Random.Range(0, 3), player1.RandBet());
         player2.PerformBet(UnityEngine.Random.Range(0, 3),  player2.RandBet());
         Debug.Log(String.Format("Player 1 : '{0}'", player1.currentBet.ToString()));
         Debug.Log(String.Format("Player 2 : '{0}'", player2.currentBet.ToString()));
-        if (player1.IsWinner(player2.currentBet))
+        OnBetResult();
+    }
+
+    public void OnBetResult()
+    {
+        if (IsWinner(player1.currentBet, player2.currentBet))
         {
             Debug.Log("Player 1 wins");
         }
-        else if(player2.IsWinner(player1.currentBet))
+        else if (IsWinner(player2.currentBet, player1.currentBet))
         {
-            Debug.Log("Player 2 wins");
-        } 
+            Debug.Log("IA wins");
+        }
         else
         {
             Debug.Log("Draws");

@@ -13,22 +13,6 @@ public class Player
         this.currentBet = bet;
     }
 
-    public bool IsWinner(Bet opponentBet)
-    {
-        if (opponentBet == Bet.ROCK && currentBet == Bet.PAPER)
-        {
-            return true;
-        }
-        else if (opponentBet == Bet.PAPER && currentBet == Bet.SCISSORS)
-        {
-            return true;
-        }
-        else if (opponentBet == Bet.SCISSORS && currentBet == Bet.ROCK)
-        {
-            return true;
-        }
-        return false;
-    }
 
     public Bet RandBet()
     {
