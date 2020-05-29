@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    private Human player1;
+    private Human player;
     private IA ia;
     private Board board;
 
@@ -25,11 +25,11 @@ public class GameManager : MonoBehaviour
     /// Init Method
     /// </summary>
     /// <param name="player1"></param>
-    /// <param name="player2"></param>
-    public void OnStartGame(Human player1, IA player2)
+    /// <param name="ia"></param>
+    public void OnStartGame(Human player, IA ia)
     {
-        this.player1 = player1;
-        this.ia = player2;
+        this.player = player;
+        this.ia = ia;
     }
 
     /// <summary>
