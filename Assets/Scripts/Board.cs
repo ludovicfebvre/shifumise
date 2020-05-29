@@ -2,17 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour
+/// <summary>
+/// Class Board
+/// </summary>
+public class Board
 {
-    // Start is called before the first frame update
-    void Start()
+    private List<Slot> slots;
+
+    /// <summary>
+    /// Board Constructor
+    /// </summary>
+    public Board()
     {
-        
+        this.slots = new List<Slot>();
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Method that move a player from a given displacement number
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="displacement"></param>
+    public void movePlayer(Player player, int displacement)
     {
-        
+        List<Player> players;
+        foreach (Slot slot in slots)
+        {
+            players = slot.GetPlayers();
+            //TODO
+        }
     }
 }

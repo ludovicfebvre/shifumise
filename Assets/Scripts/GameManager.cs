@@ -1,15 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// Class GameManager
+/// </summary>
 public class GameManager : MonoBehaviour
 {
 
-    private Player player1;
-    private Player player2;
+    private Human player1;
+    private IA ia;
+    private Board board;
 
     void Start()
     {
-        OnStartGame(new Player(), new Player());
+        OnStartGame(new Human("HUMAINNNNNNNNN",0, SignName.PAPER, 0), new IA("SKYNET",0,SignName.PAPER,0));
     }
 
     void Update()
@@ -17,38 +21,52 @@ public class GameManager : MonoBehaviour
         OnBet();
     }
 
-    public void OnStartGame(Player player1, Player player2)
+    /// <summary>
+    /// Init Method
+    /// </summary>
+    /// <param name="player1"></param>
+    /// <param name="player2"></param>
+    public void OnStartGame(Human player1, IA player2)
     {
         this.player1 = player1;
-        this.player2 = player2;
+        this.ia = player2;
     }
 
+    /// <summary>
+    /// OnBet Event Method
+    /// </summary>
     public void OnBet()
     {
-        player1.PerformBet(UnityEngine.Random.Range(0, 3), player1.RandBet());
-        player2.PerformBet(UnityEngine.Random.Range(0, 3),  player2.RandBet());
-        Debug.Log(String.Format("Player 1 : '{0}'", player1.currentBet.ToString()));
-        Debug.Log(String.Format("Player 2 : '{0}'", player2.currentBet.ToString()));
-        if (player1.IsWinner(player2.currentBet))
-        {
-            Debug.Log("Player 1 wins");
-        }
-        else if(player2.IsWinner(player1.currentBet))
-        {
-            Debug.Log("Player 2 wins");
-        } 
-        else
-        {
-            Debug.Log("Draws");
-        }
+
     }
 
-    public void OnProcessing()
+    /// <summary>
+    /// Method that determine which Sign has won.
+    /// </summary>
+    /// <param name="playerBet"></param>
+    /// <param name="opponentbet"></param>
+    /// <returns></returns>
+    public bool IsWinner(Sign playerBet, Sign opponentBet)
     {
-
+        if (opponentBet.GetName() == SignName.ROCK && playerBet.GetName() == SignName.PAPER)
+        {
+            return true;
+        }
+        else if (opponentBet.GetName() == SignName.PAPER && playerBet.GetName() == SignName.SCISSORS)
+        {
+            return true;
+        }
+        else if (opponentBet.GetName() == SignName.SCISSORS && playerBet.GetName() == SignName.ROCK)
+        {
+            return true;
+        }
+        return false;
     }
 
-    public void OnEnd()
+    /// <summary>
+    /// OnResult Event Method
+    /// </summary>
+    public void OnResult()
     {
 
     }
