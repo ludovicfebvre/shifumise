@@ -13,16 +13,21 @@ public class GameManager : MonoBehaviour
     private IA ia;
     private Board board;
 
+    public Sprite[] sprites;
+
 
 
     //BET UI
     public GameObject UIBet;
+    public GameObject UIBetOpponent;
+    public GameObject UIBOUTONADEGAGER;
 
     private bool betTurn;
 
     void Start()
     {
         OnStartGame(new Human("HUMAINNNNNNNNN",0, SignName.PAPER, 0), new IA("SKYNET",0,SignName.PAPER,0));
+        betTurn = false;
     }
 
     void Update()
@@ -46,46 +51,28 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnBet()
     {
-        Debug.Log(Application.dataPath + "Sprites/" + ia.GetCurrentBet().ToString + ".png");
+        UIBet.SetActive(true);
+        ia.SetCurrentBet();
         if (betTurn)
         {
-            UIBet.SetActive(true);
-            ia.SetCurrentBet();
-            GameObject.Find("OpponentImage").GetComponent<Image>().sprite = Application.dataPath + "Sprites/" + ia.GetCurrentBet().ToString + ".png";
-            GameObject.Find("BetOpponentPanel").SetActive(true);
-        }
-        else
-        {
-
-        }
-        GameObject.Find("ActiveBetPanel").SetActive(false);
-    }
-
-    public void betTreatment(Button btn)
-    {
-        //GameObject.Find("OpponentImage").GetComponent<Image>().sprite;
-        if (true)
-        {
-            ia.SetCurrentBet();
-            GameObject.Find("BetOpponentPanel").SetActive(true);
-            player.SetCurrentBet(Int32.Parse(btn.name.Substring(btn.name.Length - 1)));
+            UIBetOpponent.SetActive(true);
+            GameObject.Find("OpponentImage").GetComponent<Image>().sprite = sprites[ia.GetCurrentBet()-1];
             betTurn = false;
         }
         else
         {
-
+            betTurn = true;
         }
-        UIBet.SetActive(false);
+        UIBOUTONADEGAGER.SetActive(false);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public void invertBet()
+    public void betTreatment(Button btn)
     {
-
+        player.SetCurrentBet(Int32.Parse(btn.name.Substring(btn.name.Length - 1)));
+        UIBet.SetActive(false);
+        UIBetOpponent.SetActive(false);
+        UIBOUTONADEGAGER.SetActive(true);
     }
-
 
     /// <summary>
     /// Method that determine which Sign has won.
