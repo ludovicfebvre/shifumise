@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     //BET UI
     public GameObject UIBet;
 
+    private bool betTurn;
 
     void Start()
     {
@@ -45,15 +46,46 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnBet()
     {
-        UIBet.SetActive(true);
+        Debug.Log(Application.dataPath + "Sprites/" + ia.GetCurrentBet().ToString + ".png");
+        if (betTurn)
+        {
+            UIBet.SetActive(true);
+            ia.SetCurrentBet();
+            GameObject.Find("OpponentImage").GetComponent<Image>().sprite = Application.dataPath + "Sprites/" + ia.GetCurrentBet().ToString + ".png";
+            GameObject.Find("BetOpponentPanel").SetActive(true);
+        }
+        else
+        {
+
+        }
+        GameObject.Find("ActiveBetPanel").SetActive(false);
     }
 
     public void betTreatment(Button btn)
     {
-        player.SetCurrentBet(Int32.Parse(btn.name.Substring(btn.name.Length-1)));
-        ia.SetCurrentBet();
+        //GameObject.Find("OpponentImage").GetComponent<Image>().sprite;
+        if (true)
+        {
+            ia.SetCurrentBet();
+            GameObject.Find("BetOpponentPanel").SetActive(true);
+            player.SetCurrentBet(Int32.Parse(btn.name.Substring(btn.name.Length - 1)));
+            betTurn = false;
+        }
+        else
+        {
+
+        }
         UIBet.SetActive(false);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void invertBet()
+    {
+
+    }
+
 
     /// <summary>
     /// Method that determine which Sign has won.
