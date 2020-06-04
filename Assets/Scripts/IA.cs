@@ -29,9 +29,18 @@ public class IA : Player
     /// Method that return random bet between 1 and 4.
     /// </summary>
     /// <returns></returns>
-    public int ChooseBet()
+    public void SetCurrentBet()
     {
-        return Random.Range(1, 4);
+        currentBet = Random.Range(1, 4);
+    }
+
+    /// <summary>
+    /// bet Getter
+    /// </summary>
+    /// <returns></returns>
+    public int GetCurrentBet()
+    {
+        return currentBet;
     }
 
     /// <summary>

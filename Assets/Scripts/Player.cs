@@ -6,7 +6,6 @@ using System.Collections;
 /// </summary>
 public interface Player
 {
-    int ChooseBet();
     SignName ChooseSign();
 }
 

@@ -26,9 +26,14 @@ public class Human : Player
         this.currentPlace = currentPlace;
     }
 
-    public int ChooseBet()
+
+    /// <summary>
+    /// Bet Setter
+    /// </summary>
+    /// <param name="choosedBet"></param>
+    public void SetCurrentBet(int choosedBet)
     {
-        throw new System.NotImplementedException();
+        currentBet = choosedBet;
     }
 
     public SignName ChooseSign()
@@ -52,5 +57,15 @@ public class Human : Player
     public void SetName(string name)
     {
         this.name = name;
+    }
+
+
+    /// <summary>
+    /// bet Getter
+    /// </summary>
+    /// <returns></returns>
+    public int GetCurrentBet()
+    {
+        return this.currentBet;
     }
 }
