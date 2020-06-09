@@ -5,25 +5,6 @@
 /// </summary>
 public class IA : Player
 {
-    private string name;
-    private int currentBet;
-    private SignName currentSign;
-    private int currentPlace;
-
-    /// <summary>
-    /// IA Constructor
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="currentBet"></param>
-    /// <param name="currentSign"></param>
-    /// <param name="currentPlace"></param>
-    public IA(string name, int currentBet, SignName currentSign, int currentPlace)
-    {
-        this.name = name;
-        this.currentBet = currentBet;
-        this.currentSign = currentSign;
-        this.currentPlace = currentPlace;
-    }
 
     /// <summary>
     /// Method that return random bet between 1 and 4.
@@ -47,19 +28,22 @@ public class IA : Player
     /// Method that return a random SignName
     /// </summary>
     /// <returns></returns>
-    public SignName ChooseSign()
+    public void ChooseSign()
     {
         int random = Random.Range(0, 3);
         switch (random)
         {
             case 0:
-                return SignName.ROCK;
+                currentSign = SignName.ROCK;
+                break;
 
             case 1:
-                return SignName.PAPER;
+                currentSign = SignName.PAPER;
+                break;
 
             default:
-                return SignName.SCISSORS;
+                currentSign = SignName.SCISSORS;
+                break;
         }
     }
 
@@ -79,5 +63,10 @@ public class IA : Player
     public void SetName(string name)
     {
         this.name = name;
+    }
+
+    public SignName GetCurrentSign()
+    {
+        return currentSign;
     }
 }
