@@ -6,28 +6,36 @@ using UnityEngine.UI;
 /// <summary>
 /// Class GameManager
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager : 
+    MonoBehaviour, 
+    BetPanelScript.BetCallback, 
+    SignPanelScript.SignCallback,
+    ResultPanelScript.ResultCallback,
+    Player.PlayerCallBack
 {
-
+    [SerializeField]
     private Human player;
+    [SerializeField]
     private IA ia;
-    private Board board;
-
-    public Sprite[] sprites;
-
-
-
-    //BET UI
-    public GameObject UIBet;
-    public GameObject UIBetOpponent;
-    public GameObject UIBOUTONADEGAGER;
+    [SerializeField]
+    private BetPanelScript betPanelScript;
+    [SerializeField]
+    private SignPanelScript signPanelScript;
+    [SerializeField]
+    private ResultPanelScript resultPanelScript;
+    [SerializeField]
+    private EndGamePanelScript endGamePanelScript;
 
     private bool betTurn;
 
     void Start()
     {
-        OnStartGame(new Human("HUMAINNNNNNNNN",0, SignName.PAPER, 0), new IA("SKYNET",0,SignName.PAPER,0));
-        betTurn = false;
+        betPanelScript.AddBetCallback(this);
+        signPanelScript.AddSignCallback(this);
+        resultPanelScript.AddResultCallback(this);
+        player.AddCallback(this);
+        ia.AddCallback(this);
+        OnBetPhase();
     }
 
     void Update()
@@ -36,73 +44,116 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Init Method
-    /// </summary>
-    /// <param name="player1"></param>
-    /// <param name="ia"></param>
-    public void OnStartGame(Human player, IA ia)
-    {
-        this.player = player;
-        this.ia = ia;
-    }
-
-    /// <summary>
     /// OnBet Event Method
     /// </summary>
-    public void OnBet()
+    public void OnBetPhase()
     {
-        UIBet.SetActive(true);
+        resultPanelScript.SetActive(false);
+        betPanelScript.SetActive(true);
         ia.SetCurrentBet();
-        if (betTurn)
-        {
-            UIBetOpponent.SetActive(true);
-            GameObject.Find("OpponentImage").GetComponent<Image>().sprite = sprites[ia.GetCurrentBet()-1];
-            betTurn = false;
-        }
-        else
-        {
-            betTurn = true;
-        }
-        UIBOUTONADEGAGER.SetActive(false);
+        betPanelScript.SetOpponentBetActive(betTurn);
+        betPanelScript.SetOpponentBetImage(ia.GetCurrentBet());
+        betTurn = !betTurn;
     }
 
-    public void betTreatment(Button btn)
+    public void OnSignChoicePhase()
     {
-        player.SetCurrentBet(Int32.Parse(btn.name.Substring(btn.name.Length - 1)));
-        UIBet.SetActive(false);
-        UIBetOpponent.SetActive(false);
-        UIBOUTONADEGAGER.SetActive(true);
+        betPanelScript.SetActive(false);
+        signPanelScript.SetActive(true);
+        ia.ChooseSign();
     }
 
-    /// <summary>
-    /// Method that determine which Sign has won.
-    /// </summary>
-    /// <param name="playerSign"></param>
-    /// <param name="opponentSign"></param>
-    /// <returns></returns>
-    public bool IsWinner(Sign playerSign, Sign opponentSign)
+    public void OnResultPhase()
     {
-        if (opponentSign.GetName() == SignName.ROCK && playerSign.GetName() == SignName.PAPER)
+        signPanelScript.SetActive(false);
+        resultPanelScript.SetResult(IsWinner(player.GetCurrentSign(), ia.GetCurrentSign()));
+        resultPanelScript.SetCoinTotal(player.GetCurrentBet() + ia.GetCurrentBet());
+        resultPanelScript.SetPlayerSign(player.GetCurrentSign());
+        resultPanelScript.SetOpponentSign(ia.GetCurrentSign());
+        resultPanelScript.SetActive(true);
+        if(IsWinner(player.GetCurrentSign(), ia.GetCurrentSign()) == Result.WIN)
         {
-            return true;
-        }
-        else if (opponentSign.GetName() == SignName.PAPER && playerSign.GetName() == SignName.SCISSORS)
+            player.Move(player.GetCurrentBet() + ia.GetCurrentBet());
+        } 
+        else if(IsWinner(player.GetCurrentSign(), ia.GetCurrentSign()) == Result.LOSE)
         {
-            return true;
+            ia.Move(player.GetCurrentBet() + ia.GetCurrentBet());
         }
-        else if (opponentSign.GetName() == SignName.SCISSORS && playerSign.GetName() == SignName.ROCK)
-        {
-            return true;
-        }
-        return false;
     }
 
-    /// <summary>
-    /// OnResult Event Method
-    /// </summary>
-    public void OnResult()
+    public Result IsWinner(SignName playerSign, SignName opponentSign)
+    {
+        if (opponentSign == playerSign)
+        {
+            return Result.DRAW;
+        }
+        if (opponentSign == SignName.ROCK && playerSign == SignName.PAPER)
+        {
+            return Result.WIN;
+        }
+        else if (opponentSign == SignName.PAPER && playerSign == SignName.SCISSORS)
+        {
+            return Result.WIN;
+        }
+        else if (opponentSign == SignName.SCISSORS && playerSign == SignName.ROCK)
+        {
+            return Result.WIN;
+        }
+        return Result.LOSE;
+    }
+
+    void BetPanelScript.BetCallback.OnBet(int bet)
+    {
+        player.SetCurrentBet(bet);
+        OnSignChoicePhase();
+    }
+
+    void BetPanelScript.BetCallback.OnTimeOut()
+    {
+        //TODO : Aléatoire
+        player.SetCurrentBet(1);
+        OnSignChoicePhase();
+    }
+
+    void SignPanelScript.SignCallback.OnSignChosen(SignName sign)
+    {
+        player.SetSign(sign);
+        OnResultPhase();
+    }
+
+    void SignPanelScript.SignCallback.OnTimeOut()
+    {
+        //TODO : Aléatoire
+        player.SetSign(SignName.PAPER);
+        OnResultPhase();
+    }
+
+    void ResultPanelScript.ResultCallback.OnConfirm()
+    {
+        OnBetPhase();
+    }
+
+    void Player.PlayerCallBack.OnStartMoving(Player player)
     {
 
     }
 
+    void Player.PlayerCallBack.OnMoving(Player player)
+    {
+
+    }
+
+    void Player.PlayerCallBack.OnStopMoving(Player player)
+    {
+
+    }
+
+    void Player.PlayerCallBack.OnWin(Player player)
+    {
+        endGamePanelScript.SetWinner(player);
+        betPanelScript.SetActive(false);
+        signPanelScript.SetActive(false);
+        resultPanelScript.SetActive(false);
+        endGamePanelScript.SetActive(true);
+    }
 }

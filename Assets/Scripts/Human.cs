@@ -6,27 +6,6 @@
 public class Human : Player
 {
 
-    private string name;
-    private int currentBet;
-    private SignName currentSign;
-    private int currentPlace;
-
-    /// <summary>
-    /// Human Constructor
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="currentBet"></param>
-    /// <param name="currentSign"></param>
-    /// <param name="currentPlace"></param>
-    public Human(string name, int currentBet, SignName currentSign, int currentPlace)
-    {
-        this.name = name;
-        this.currentBet = currentBet;
-        this.currentSign = currentSign;
-        this.currentPlace = currentPlace;
-    }
-
-
     /// <summary>
     /// Bet Setter
     /// </summary>
@@ -36,9 +15,9 @@ public class Human : Player
         currentBet = choosedBet;
     }
 
-    public SignName ChooseSign()
+    public void SetSign(SignName sign)
     {
-        throw new System.NotImplementedException();
+        currentSign = sign;
     }
 
     /// <summary>
@@ -67,5 +46,10 @@ public class Human : Player
     public int GetCurrentBet()
     {
         return this.currentBet;
+    }
+
+    public SignName GetCurrentSign()
+    {
+        return currentSign;
     }
 }
