@@ -587,7 +587,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &362870563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,7 +1164,7 @@ RectTransform:
   m_GameObject: {fileID: 773131088}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 1192294018}
   - {fileID: 362870561}
@@ -1868,7 +1868,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SHI FU MIZE
+  m_text: SHI FU MISE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 50e5a85cc12082c45b1bb25144a04159, type: 2}
   m_sharedMaterial: {fileID: 4986583548675477379, guid: 50e5a85cc12082c45b1bb25144a04159,

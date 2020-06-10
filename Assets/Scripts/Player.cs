@@ -20,7 +20,7 @@ public abstract class Player : MonoBehaviour
     public void Move(int amount)
     {
         position += amount;
-        transform.RotateAround(Roulette.transform.position, Vector3.back, 360 / 37 * amount);
+        transform.RotateAround(Roulette.transform.position, Vector3.back, (float)360 / 37 * amount);
         playerCallBackList.ForEach(delegate (PlayerCallBack playerCallBack) {
             playerCallBack.OnStartMoving(this);
         });
